@@ -5,8 +5,9 @@ using UnityEngine;
 public class Playermovement : MonoBehaviour
 {
     private Animator animator;
-    public float speed = 2f;
+    public float speed = 50f;
     private Rigidbody rb;
+    public Transform modelTransform;
     private Transform cameraTransform;
 
     private void Start()
@@ -18,8 +19,8 @@ public class Playermovement : MonoBehaviour
 
     private void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxis("Horizontal") * Time.deltaTime;
+        float verticalInput = Input.GetAxis("Vertical") * Time.deltaTime;
 
         if (Input.GetKey("q"))
         {
@@ -30,11 +31,16 @@ public class Playermovement : MonoBehaviour
             animator.SetBool("smileFlag", false);
         }
 
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKey("space"))
         {
             animator.SetBool("jumpFlag", true);
             animator.SetBool("walkFlag", false);
             animator.SetBool("idleFlag", false);
+        }
+        else
+        {
+            animator.SetBool("jumpFlag", false);
+            animator.SetBool("idleFlag", true);
         }
 
         if ((Input.GetKey("up")) || (Input.GetKey("right")) || (Input.GetKey("down")) || (Input.GetKey("left")) || Input.GetKey("w") || Input.GetKey("d") || Input.GetKey("s") || Input.GetKey("a"))
@@ -42,6 +48,11 @@ public class Playermovement : MonoBehaviour
             animator.SetBool("jumpFlag", false);
             animator.SetBool("walkFlag", true);
             animator.SetBool("idleFlag", false);
+        }
+        else
+        {
+            animator.SetBool("walkFlag", false);
+            animator.SetBool("idleFlag", true);
         }
 
         // Obtener la dirección de movimiento relativa a la cámara
@@ -56,6 +67,14 @@ public class Playermovement : MonoBehaviour
         Vector3 movement = (cameraForward * verticalInput + cameraRight * horizontalInput).normalized;
 
         // Aplicar el movimiento al jugador
-        rb.MovePosition(transform.position + movement * speed);
+        rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
+        if (movement.magnitude > 0f)
+        {
+            // Calcular la rotación hacia la dirección del movimiento
+            Quaternion targetRotation = Quaternion.LookRotation(movement);
+
+            // Aplicar suavemente la rotación al modelo del jugador
+            modelTransform.rotation = Quaternion.Lerp(modelTransform.rotation, targetRotation, 10f * Time.deltaTime);
+        }
     }
 }
