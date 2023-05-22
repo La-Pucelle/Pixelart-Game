@@ -5,7 +5,7 @@ using UnityEngine;
 public class Mmorpg_camera : MonoBehaviour
 {
     public Transform target;
-    public float distance = 5f;
+    public float distance = 10f;
     public float sensitivity = 2f;
     public float zoomSpeed = 5f;
     public float minDistance = 2f;
