@@ -5,7 +5,8 @@ using UnityEngine;
 public class Playermovement : MonoBehaviour
 {
     private Animator animator;
-    public float speed = 50f;
+    public float speed = 100f;
+    float additionalFactor = 5f;
     private Rigidbody rb;
     public Transform modelTransform;
     private Transform cameraTransform;
@@ -67,7 +68,7 @@ public class Playermovement : MonoBehaviour
         Vector3 movement = (cameraForward * verticalInput + cameraRight * horizontalInput).normalized;
 
         // Aplicar el movimiento al jugador
-        rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
+        rb.MovePosition(transform.position + movement * speed * additionalFactor * Time.deltaTime);
         if (movement.magnitude > 0f)
         {
             // Calcular la rotación hacia la dirección del movimiento

@@ -50,7 +50,7 @@ public class Mmorpg_camera : MonoBehaviour
 
             Quaternion rotation = Quaternion.Euler(currentY, currentX, 0f);
             transform.position = target.position - rotation * Vector3.forward * distance;
-            transform.LookAt(target.position);
+            transform.LookAt(target.position + Vector3.up);
         }
     }
 }
