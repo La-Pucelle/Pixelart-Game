@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEngine;
 
 public class Playermovement : MonoBehaviour
@@ -10,6 +11,9 @@ public class Playermovement : MonoBehaviour
     private Rigidbody rb;
     public Transform modelTransform;
     private Transform cameraTransform;
+    
+
+
 
     private void Start()
     {
@@ -23,6 +27,8 @@ public class Playermovement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal") * Time.deltaTime;
         float verticalInput = Input.GetAxis("Vertical") * Time.deltaTime;
 
+       
+        
         if (Input.GetKey("q"))
         {
             animator.SetBool("smileFlag", true);
@@ -50,11 +56,6 @@ public class Playermovement : MonoBehaviour
             animator.SetBool("walkFlag", true);
             animator.SetBool("idleFlag", false);
         }
-        else
-        {
-            animator.SetBool("walkFlag", false);
-            animator.SetBool("idleFlag", true);
-        }
 
         // Obtener la dirección de movimiento relativa a la cámara
         Vector3 cameraForward = cameraTransform.forward;
@@ -64,8 +65,26 @@ public class Playermovement : MonoBehaviour
         cameraForward.Normalize();
         cameraRight.Normalize();
 
+        
         // Calcular el vector de movimiento
         Vector3 movement = (cameraForward * verticalInput + cameraRight * horizontalInput).normalized;
+
+
+        // Correr
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            additionalFactor = 10f;
+        }
+        else 
+        {
+            additionalFactor = 5f;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(Vector3.up * 500);
+        }
 
         // Aplicar el movimiento al jugador
         rb.MovePosition(transform.position + movement * speed * additionalFactor * Time.deltaTime);
@@ -77,5 +96,8 @@ public class Playermovement : MonoBehaviour
             // Aplicar suavemente la rotación al modelo del jugador
             modelTransform.rotation = Quaternion.Lerp(modelTransform.rotation, targetRotation, 10f * Time.deltaTime);
         }
+
+
+        
     }
 }
