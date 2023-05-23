@@ -11,7 +11,10 @@ public class Playermovement : MonoBehaviour
     private Rigidbody rb;
     public Transform modelTransform;
     private Transform cameraTransform;
-    
+
+    public float jumpForce = 50f;
+    private bool isGrounded = true;
+    private bool isCrouching = false;
 
 
 
@@ -56,6 +59,8 @@ public class Playermovement : MonoBehaviour
             animator.SetBool("walkFlag", true);
             animator.SetBool("idleFlag", false);
         }
+        
+        
 
         // Obtener la dirección de movimiento relativa a la cámara
         Vector3 cameraForward = cameraTransform.forward;
@@ -70,21 +75,7 @@ public class Playermovement : MonoBehaviour
         Vector3 movement = (cameraForward * verticalInput + cameraRight * horizontalInput).normalized;
 
 
-        // Correr
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            additionalFactor = 10f;
-        }
-        else 
-        {
-            additionalFactor = 5f;
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.AddForce(Vector3.up * 500);
-        }
+       
 
         // Aplicar el movimiento al jugador
         rb.MovePosition(transform.position + movement * speed * additionalFactor * Time.deltaTime);
@@ -96,8 +87,50 @@ public class Playermovement : MonoBehaviour
             // Aplicar suavemente la rotación al modelo del jugador
             modelTransform.rotation = Quaternion.Lerp(modelTransform.rotation, targetRotation, 10f * Time.deltaTime);
         }
+        // Correr
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            additionalFactor = 10f;
+        }
+        else
+        {
+            additionalFactor = 5f;
+        }
 
 
-        
+        if (isGrounded)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                isGrounded = false; // El jugador está en el aire después de saltar
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            isCrouching = !isCrouching;
+        }
+        //ajustar altura del personaje :o
+
+        if (isCrouching)
+        {
+            additionalFactor = 2.5f;
+            modelTransform.localScale = new Vector3(modelTransform.localScale.x, 0.5f, modelTransform.localScale.z);
+        }
+        else
+        {
+            additionalFactor = 5f;
+            modelTransform.localScale = new Vector3(modelTransform.localScale.x, 1f, modelTransform.localScale.z);
+        }
+    }
+    
+    //pa saber si esta en el suelowo
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
     }
 }
