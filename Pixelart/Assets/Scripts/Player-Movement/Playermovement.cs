@@ -5,23 +5,24 @@ using UnityEngine;
 
 public class Playermovement : MonoBehaviour
 {
-    private Animator animator;
-    public float speed = 100f;
+    public float speed = 5f;
     float additionalFactor = 5f;
     private Rigidbody rb;
     public Transform modelTransform;
     private Transform cameraTransform;
+    private Rigidbody rigid;
 
-    public float jumpForce = 50f;
-    private bool isGrounded = true;
+    public float jumpForce = 5f;
+    public LayerMask groundLayer;
+    public float raycastDistance = 1.1f;
+    private bool isGrounded = false;
     private bool isCrouching = false;
 
 
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
+        rb = gameObject.GetComponent<Rigidbody>();
         cameraTransform = Camera.main.transform;
     }
 
@@ -30,37 +31,6 @@ public class Playermovement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal") * Time.deltaTime;
         float verticalInput = Input.GetAxis("Vertical") * Time.deltaTime;
 
-       
-        
-        if (Input.GetKey("q"))
-        {
-            animator.SetBool("smileFlag", true);
-        }
-        else
-        {
-            animator.SetBool("smileFlag", false);
-        }
-
-        if (Input.GetKey("space"))
-        {
-            animator.SetBool("jumpFlag", true);
-            animator.SetBool("walkFlag", false);
-            animator.SetBool("idleFlag", false);
-        }
-        else
-        {
-            animator.SetBool("jumpFlag", false);
-            animator.SetBool("idleFlag", true);
-        }
-
-        if ((Input.GetKey("up")) || (Input.GetKey("right")) || (Input.GetKey("down")) || (Input.GetKey("left")) || Input.GetKey("w") || Input.GetKey("d") || Input.GetKey("s") || Input.GetKey("a"))
-        {
-            animator.SetBool("jumpFlag", false);
-            animator.SetBool("walkFlag", true);
-            animator.SetBool("idleFlag", false);
-        }
-        
-        
 
         // Obtener la dirección de movimiento relativa a la cámara
         Vector3 cameraForward = cameraTransform.forward;
@@ -74,8 +44,13 @@ public class Playermovement : MonoBehaviour
         // Calcular el vector de movimiento
         Vector3 movement = (cameraForward * verticalInput + cameraRight * horizontalInput).normalized;
 
+        // Salto
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
+        }
 
-       
 
         // Aplicar el movimiento al jugador
         rb.MovePosition(transform.position + movement * speed * additionalFactor * Time.deltaTime);
@@ -97,15 +72,7 @@ public class Playermovement : MonoBehaviour
             additionalFactor = 5f;
         }
 
-
-        if (isGrounded)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                isGrounded = false; // El jugador está en el aire después de saltar
-            }
-        }
+        
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -124,13 +91,16 @@ public class Playermovement : MonoBehaviour
             modelTransform.localScale = new Vector3(modelTransform.localScale.x, 1f, modelTransform.localScale.z);
         }
     }
-    
-    //pa saber si esta en el suelowo
-    private void OnCollisionEnter(Collision collision)
+    void FixedUpdate()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        // Lanzar un rayo hacia abajo para detectar colisiones con el suelo
+        if (Physics.Raycast(transform.position, Vector3.down, raycastDistance, groundLayer))
         {
             isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
         }
     }
 }
