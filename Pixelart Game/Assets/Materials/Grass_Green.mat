@@ -104,20 +104,20 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _BendDelta: 0.364
-    - _BladeBendCurve: 4
+    - _BendDelta: 0.118
+    - _BladeBendCurve: 1.31
     - _BladeBendDistance: 0.4
     - _BladeCurve: 2
     - _BladeForward: 0.38
     - _BladeHeight: 0.25
     - _BladeHeightDelta: 0.05
-    - _BladeHeightMax: 1.658
-    - _BladeHeightMin: 1.449
-    - _BladeSegments: 7.09
+    - _BladeHeightMax: 0.221
+    - _BladeHeightMin: 0.638
+    - _BladeSegments: 2.2
     - _BladeWidth: 0.015
     - _BladeWidthDelta: 0.02
-    - _BladeWidthMax: 0.0877
-    - _BladeWidthMin: 0.0859
+    - _BladeWidthMax: 0.1
+    - _BladeWidthMin: 0.1
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -132,7 +132,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _GrassFalloff: 0.5
-    - _GrassThreshold: 0.158
+    - _GrassThreshold: 0.599
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -146,8 +146,8 @@ Material:
     - _TesselationFactor: 4
     - _TessellationEdgeLength: 0.25
     - _TessellationFactor: 4
-    - _TessellationGrassDistance: 0.01
-    - _WindFrequency: 0.0125
+    - _TessellationGrassDistance: 0.312
+    - _WindFrequency: 0.004
     - _WindStrength: 0.5
     - _WorkflowMode: 1
     - _ZWrite: 1
