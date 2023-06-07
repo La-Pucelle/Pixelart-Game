@@ -15,18 +15,19 @@ MonoBehaviour:
   version: 4
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Grass_Green
   m_Shader: {fileID: 4800000, guid: 72e68f904ae08fc4299172cfb53712c6, type: 3}
-  m_ShaderKeywords: 
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_DoubleSidedGI: 1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -100,22 +101,23 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _BendDelta: 0.15
-    - _BladeBendCurve: 4
-    - _BladeBendDistance: 0.39
+    - _BendDelta: 0.155
+    - _BladeBendCurve: 1.77
+    - _BladeBendDistance: 0.4
     - _BladeCurve: 2
     - _BladeForward: 0.38
     - _BladeHeight: 0.25
     - _BladeHeightDelta: 0.05
-    - _BladeHeightMax: 1.25
-    - _BladeHeightMin: 0.75
-    - _BladeSegments: 3
+    - _BladeHeightMax: 0.906
+    - _BladeHeightMin: 0.697
+    - _BladeSegments: 7.09
     - _BladeWidth: 0.015
     - _BladeWidthDelta: 0.02
-    - _BladeWidthMax: 0.05
-    - _BladeWidthMin: 0.02
+    - _BladeWidthMax: 0.0438
+    - _BladeWidthMin: 0.0446
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -144,7 +146,7 @@ Material:
     - _TesselationFactor: 4
     - _TessellationEdgeLength: 0.25
     - _TessellationFactor: 4
-    - _TessellationGrassDistance: 0.075
+    - _TessellationGrassDistance: 0.134
     - _WindFrequency: 0.0125
     - _WindStrength: 0.5
     - _WorkflowMode: 1
