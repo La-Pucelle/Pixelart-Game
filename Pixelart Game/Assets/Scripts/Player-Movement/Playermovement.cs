@@ -25,8 +25,8 @@ public class Playermovement : MonoBehaviour
 
     private void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxisRaw("Horizontal");
+        float verticalInput = Input.GetAxisRaw("Vertical");
 
 
         // Obtener la dirección de movimiento relativa a la cámara
