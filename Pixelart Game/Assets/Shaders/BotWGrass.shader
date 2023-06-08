@@ -32,8 +32,8 @@ Shader "Custom/BotWGrass"
 	{
 		Tags
 		{
-			"RenderType" = "Opaque"
-			"Queue" = "Geometry"
+			"RenderType" = "Transparent"
+			"Queue" = "Transparent+Opaque"
 			"RenderPipeline" = "UniversalPipeline"
 		}
 		LOD 100

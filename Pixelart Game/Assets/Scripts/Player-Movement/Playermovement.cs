@@ -6,16 +6,13 @@ using UnityEngine;
 public class Playermovement : MonoBehaviour
 {
     public float speed = 5f;
-    float additionalFactor = 5f;
-    private Rigidbody rb;
-    public Transform modelTransform;
-    private Transform cameraTransform;
-    private Rigidbody rigid;
+    private Rigidbody rb; // Rigidbody del modelo
+    public Transform modelTransform; // Rotacion del modelo
+    private Transform cameraTransform; // Direccion de la camara
 
-    public float jumpForce = 5f;
+    public float raycastDistance = 1.1f; // Distancia del rayo
     public LayerMask groundLayer;
-    public float raycastDistance = 1.1f;
-    private bool isGrounded = false;
+    private bool isGrounded = false; 
     private bool isCrouching = false;
 
 
@@ -28,8 +25,8 @@ public class Playermovement : MonoBehaviour
 
     private void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal") * Time.deltaTime;
-        float verticalInput = Input.GetAxis("Vertical") * Time.deltaTime;
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
 
 
         // Obtener la dirección de movimiento relativa a la cámara
@@ -44,16 +41,8 @@ public class Playermovement : MonoBehaviour
         // Calcular el vector de movimiento
         Vector3 movement = (cameraForward * verticalInput + cameraRight * horizontalInput).normalized;
 
-        // Salto
-        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-        }
-
-
         // Aplicar el movimiento al jugador
-        rb.MovePosition(transform.position + movement * speed * additionalFactor * Time.deltaTime);
+        rb.MovePosition(transform.position + movement * speed * Time.deltaTime);
         if (movement.magnitude > 0f)
         {
             // Calcular la rotación hacia la dirección del movimiento
@@ -62,17 +51,7 @@ public class Playermovement : MonoBehaviour
             // Aplicar suavemente la rotación al modelo del jugador
             modelTransform.rotation = Quaternion.Lerp(modelTransform.rotation, targetRotation, 10f * Time.deltaTime);
         }
-        // Correr
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            additionalFactor = 10f;
-        }
-        else
-        {
-            additionalFactor = 5f;
-        }
-
-        
+       
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -82,15 +61,14 @@ public class Playermovement : MonoBehaviour
 
         if (isCrouching)
         {
-            additionalFactor = 2.5f;
             modelTransform.localScale = new Vector3(modelTransform.localScale.x, 0.5f, modelTransform.localScale.z);
         }
         else
         {
-            additionalFactor = 5f;
             modelTransform.localScale = new Vector3(modelTransform.localScale.x, 1f, modelTransform.localScale.z);
         }
     }
+
     void FixedUpdate()
     {
         // Lanzar un rayo hacia abajo para detectar colisiones con el suelo
